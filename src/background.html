@@ -11,7 +11,7 @@
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					container.innerHTML = xhr.responseText;
-					success(Array.prototype.slice.call(container.querySelectorAll('.list .item')).map(function(item, key) {
+					success(Array.prototype.slice.call(container.querySelectorAll('.list .item.unread')).map(function(item, key) {
 						return {
 							image: item.querySelector('div.gravatar img').src,
 							title: item.querySelector('div.title').innerHTML,
@@ -42,15 +42,15 @@
 					return notification.content === localStorage.last_notification_content ||
 						!new_notifications.push(notification);
 				});
+				new_notifications.length && (localStorage.last_notification_content = new_notifications[0].content);
 				new_notifications.reverse().map(notify);
 			}
-			notifications.length && (localStorage.last_notification_content = notifications[0].content);
 			setTimeout(pull, localStorage.interval);
 		}, function() {
 			var notification = webkitNotifications.createNotification(
 				'48.png',
 				'Error fetching GitHub notifications',
-				'Make sure you\'re connected to your GitHub account. Retrying in '+localStorage.interval+' seconds.'
+				'Make sure you\'re connected to your GitHub account. Retrying in '+(localStorage.interval/1000)+' seconds.'
 			);
 			notification.show();
 			setTimeout(function(){notification.cancel();}, 5000);
