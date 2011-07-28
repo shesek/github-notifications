@@ -1,0 +1,10 @@
+{
+  "name": "GitHub Notifications",
+  "version": "0.5",
+  "description":
+    "Get notifications from GitHub to Chrome Desktop Notifications. https://github.com/shesek/github-notifications/",
+  "icons": {"16": "16.png", "48": "48.png", "128": "128.png"},
+  "permissions": ["notifications", "https://github.com/"],
+  "background_page": "background.html",
+  "options_page": "options.html"
+} 

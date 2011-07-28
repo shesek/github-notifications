@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GitHub Notifier Options</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			* { margin:0; padding: 0; }
+			body { font: 13.34px helvetica,arial,freesans,clean,sans-serif; line-height: 1.4; padding: 1em; }
+			#message { display: none; }
+			form { padding: 1em; }
+			p { margin-bottom: 0.5em; }
+			input[type=submit] { padding: 0.3em; }
+		</style>
+		<script type="text/javascript">
+		window.addEventListener('load',function(e) {
+			document.getElementById('interval').value = localStorage.interval / 1000;
+			document.getElementById('display-time').value = localStorage.displayTime / 1000;
+			document.getElementsByTagName('form')[0].addEventListener('submit', function() {
+				localStorage.interval = (parseInt(document.getElementById('interval').value) || 120) * 1000;
+				localStorage.displayTime = (parseInt(document.getElementById('display-time').value) || 15) * 1000;
+				document.getElementById('message').style.display = 'block';
+				e.preventDefault();
+				return false;
+			}, false);
+		}, false);
+		</script>
+	</head>
+	<body>
+		<h1>GitHub Notifications Options</h1>
+		<form>
+			<p>
+				<label for="interval">Check for new notifications every</label>
+				<input type="text" id="interval" size="3" /> seconds
+			</p>
+			<p>
+				<label for="display-time">Display notifications for</label>
+				<input type="text" id="display-time" size="3" /> seconds (use -1 to disable auto-hide)
+			</p>
+			<input type="submit" value="Save" />
+			<div id="message">Saved succesfully.</div>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--<base href="https://github.com/" />-->
+		<meta charset="utf-8">
+		<style type="text/css">
+			* { margin:0; padding: 0; }
+			.clear { clear: both; }
+			body { font: 13.34px helvetica,arial,freesans,clean,sans-serif; line-height: 1.4; padding: 1em; }
+			h4 { font-weight: bold; padding: 0 0 .25em 0; margin-left: 45px; }
+			h4 span { background-color: #FFF6A9; }
+			img { height: 30px; width: 30px; border: 1px solid #D0D0D0; padding: 2px; float: left; margin-right: 0.7em; }
+			a { color: #4183C4; text-decoration: none; }
+			#content a.subject { font-weight: bold; }
+			#content a.body { color: #23486B; }
+		</style>
+		<script type="text/javascript">
+		window.addEventListener('load',function() {
+			document.location.hash.substr(1).split('&').forEach(function(nameval) {
+				nameval = nameval.split('=');
+				document.getElementById(nameval[0])[nameval[0]==='image' ? 'src' : 'innerHTML'] = decodeURIComponent(nameval[1]);
+			});
+			document.body.addEventListener('click', function(e) {
+				e.preventDefault();
+				// Links inside notifications aren't handlded by Chrome. To make them work, catch
+				// the clicks manually and open using window.open()
+				if (e.target.tagName === 'A') { // When a link is clicked, use its href
+					var href = e.target.getAttribute('href');
+				// Clicking in the notification area, but not on a specific link, opens the first
+				// link in the content area, which is the primary link.
+				} else {
+					var href = document.querySelector('#content a').href;
+				}
+				window.open(href.indexOf('/') === 0 ? 'https://github.com' + href : href);
+				window.close();
+			}, false);
+		}, false);
+		</script>
+	</head>
+	<body>
+		<img id="image" />
+		<h4 id="title"></h4>
+		<div class="clear"></div>
+		<div id="content"></div>
+	</body>
+</html>
