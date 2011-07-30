@@ -11,7 +11,7 @@
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					container.innerHTML = xhr.responseText;
-					success(Array.prototype.slice.call(container.querySelectorAll('.list .item.unread')).map(function(item, key) {
+					success(Array.prototype.slice.call(container.querySelectorAll('.list .item')).map(function(item, key) {
 						return {
 							image: item.querySelector('div.gravatar img').src,
 							title: item.querySelector('div.title').innerHTML,
@@ -44,6 +44,8 @@
 				});
 				new_notifications.length && (localStorage.last_notification_content = new_notifications[0].content);
 				new_notifications.reverse().map(notify);
+			} else {
+				localStorage.last_notification_content = notifications[0].content;
 			}
 			setTimeout(pull, localStorage.interval);
 		}, function() {
