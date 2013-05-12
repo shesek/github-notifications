@@ -11,19 +11,7 @@
 			p { margin-bottom: 0.5em; }
 			input[type=submit] { padding: 0.3em; }
 		</style>
-		<script type="text/javascript">
-		window.addEventListener('load',function(e) {
-			document.getElementById('interval').value = localStorage.interval / 1000;
-			document.getElementById('display-time').value = localStorage.displayTime / 1000;
-			document.getElementsByTagName('form')[0].addEventListener('submit', function() {
-				localStorage.interval = (parseInt(document.getElementById('interval').value) || 120) * 1000;
-				localStorage.displayTime = (parseInt(document.getElementById('display-time').value) || 15) * 1000;
-				document.getElementById('message').style.display = 'block';
-				e.preventDefault();
-				return false;
-			}, false);
-		}, false);
-		</script>
+		<script src="options.js"></script
 	</head>
 	<body>
 		<h1>GitHub Notifications Options</h1>

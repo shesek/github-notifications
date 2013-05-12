@@ -1,4 +1,3 @@
-<script type="text/javascript">
 (function() {
 	localStorage.interval || (localStorage.interval = 120000);
 	localStorage.displayTime || (localStorage.displayTime = 15000);
@@ -10,14 +9,8 @@
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
-					container.innerHTML = xhr.responseText;
-					success(Array.prototype.slice.call(container.querySelectorAll('.list .item')).map(function(item, key) {
-						return {
-							image: item.querySelector('div.gravatar img').src,
-							title: item.querySelector('div.title').innerHTML,
-							content: item.querySelector('div.message').innerHTML
-						};
-					}));
+					notifications = parse_notifications(xhr.responseText);
+					success(notifications);
 				} else {
 					failure();
 				}
@@ -25,6 +18,21 @@
 		}
 		xhr.send();
 	}
+
+	function parse_notifications(responseText) {
+		container.innerHTML = responseText;
+		var notificationNodes = container.querySelectorAll('#notification-center .list-browser-item');
+		var notifications = Array.prototype.slice.call(notificationNodes).map(function(item, key) {
+			var item = {
+				image: item.querySelector('img.avatar').src,
+				title: item.querySelector('h4').innerText,
+				content: item.querySelector('h4').innerHTML
+			};
+			return item;
+		})
+		return notifications;
+	}
+
 	function notify(notification) {
 		var notification = webkitNotifications.createHTMLNotification(
 			'notification.html#image=' + encodeURIComponent(notification.image) +
@@ -34,6 +42,7 @@
 		notification.show();
 		localStorage.displayTime > 0 && setTimeout(function(){notification.cancel();}, localStorage.displayTime);
 	}
+
 	(function pull() {
 		get_notifications(function(notifications) {
 			if (localStorage.last_notification_content !== undefined) {
@@ -45,7 +54,9 @@
 				new_notifications.length && (localStorage.last_notification_content = new_notifications[0].content);
 				new_notifications.reverse().map(notify);
 			} else {
-				localStorage.last_notification_content = notifications[0].content;
+				if (notifications[0] !== undefined) {
+					localStorage.last_notification_content = notifications[0].content;
+				}
 			}
 			setTimeout(pull, localStorage.interval);
 		}, function() {
@@ -60,4 +71,3 @@
 		});
 	})();
 })();
-</script>
